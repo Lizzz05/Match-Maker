@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f6f7f4">
+  <title>Fair Match-Maker</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  <script src="{{ url_for('static', filename='app.js') }}" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="Fair Match-Maker home"><span class="brand-mark">FM</span><span>Fair Match-Maker</span></a>
+    <span class="course-tag">AI · LOCAL SEARCH</span>
+  </header>
+  <main class="layout">
+    <section class="intro">
+      <p class="eyebrow">BALANCED TEAMS, CLEAR TRADE-OFFS</p>
+      <h1>Make every match<br><em>feel fair.</em></h1>
+      <p class="intro-copy">Set player ratings and availability, then compare local-search schedules against a random start.</p>
+      <div class="method-note"><span class="note-icon">↗</span><span><strong>How it works</strong><br>Ratings are summed per team. A match is assigned to its indexed slot; unavailable players add a 100-point penalty.</span></div>
+    </section>
+
+    <section class="workspace" aria-label="Match setup and results">
+      <div class="setup-card">
+        <div class="section-heading"><div><p class="eyebrow">01 / CONFIGURE</p><h2>Match setup</h2></div><span class="step-dot">01</span></div>
+        <div class="controls-grid">
+          <label>Players <input id="player-count" type="number" min="2" max="32" value="8"></label>
+          <label>Team size <select id="team-size"><option value="1">1 · Singles</option><option value="2" selected>2 · Doubles</option><option value="5">5 · Basketball</option></select></label>
+          <label>Time slots <input id="slot-count" type="number" min="1" max="12" value="2"></label>
+          <label>Random seed <input id="seed" type="number" value="7"></label>
+        </div>
+        <div class="roster-heading"><div><p class="eyebrow">PLAYER ROSTER</p><h3>Ratings & availability</h3></div><button id="build-roster" class="text-button" type="button">↻ Rebuild roster</button></div>
+        <div id="roster" class="roster" aria-live="polite"></div>
+        <div class="run-row">
+          <div class="method-buttons" role="group" aria-label="Choose search method">
+            <button class="method-button active" type="button" data-algorithm="hill_climbing" aria-pressed="true">Hill climbing</button>
+            <button class="method-button" type="button" data-algorithm="simulated_annealing" aria-pressed="false">Simulated annealing</button>
+            <button class="method-button" type="button" data-algorithm="brute_force" aria-pressed="false">Brute force</button>
+          </div>
+          <button id="run" class="run-button" type="button"><span>Find fair teams</span><span aria-hidden="true">→</span></button>
+        </div>
+        <p id="error" class="error" role="alert" hidden></p>
+      </div>
+
+      <div id="empty-state" class="empty-state"><span class="empty-icon">✳</span><div><strong>Your schedule will appear here</strong><p>Choose a method and run the match-maker to see teams and cost comparisons.</p></div></div>
+      <section id="results" class="results" hidden aria-live="polite">
+        <div class="section-heading result-heading"><div><p class="eyebrow">02 / RESULTS</p><h2 id="result-title">Schedule</h2></div><div class="cost-badge"><span>Total cost</span><strong id="total-cost">—</strong></div></div>
+        <div class="summary-row"><span id="run-time"></span><span>Ratings are input values · lower cost is better</span></div>
+        <div id="comparison" class="comparison"></div>
+        <div id="matches" class="matches"></div>
+      </section>
+      <footer class="footer-note">A teaching demo for local search · Ratings are provided by you, not measured by this tool.</footer>
+    </section>
+  </main>
+</body>
+</html>
